@@ -13,7 +13,9 @@ var UserSchema = new Schema({
     require: true
   },
   email:{
-    type: String
+    type: String,
+    unique: true,
+    require: true
   },
   token: {
     type: String

@@ -6,11 +6,13 @@ var express = require('express'),
     _ = require('lodash');
 
 module.exports = function(app){
-  app.use('/api/category', router);
+  app.use('/api/data', router);
 };
 
-// import categories
-router.post('/', function(req, res){
+// import data
+router.post('/import', function(req, res){
+
+  //delete exist data
   Category.remove({ user_id: req.user_id}, function(err){});
   Word.remove({ user_id: req.user_id}, function(err){});
 
@@ -24,39 +26,10 @@ router.post('/', function(req, res){
     return _.extend({}, element, {user_id: req.user_id});
   });
 
-console.log(words);
-  //Category.create(categories);
-  //Word.create(words);
+  Category.create(categories);
+  Word.create(words, function () {
+    res.end();
+  });
 
-  res.end();
+  //res.end();
 });
-//
-//{
-//  "categories" : [
-//  {
-//    "client_id": 1,
-//    "name": "niglect",
-//    "wordCount": 12
-//  },
-//  {
-//    "client_id": 2,
-//    "name": "approach",
-//    "wordCount": 11
-//  },
-//  {
-//    "client_id": 3,
-//    "name": "test",
-//    "wordCount": 9
-//  },
-//  {
-//    "client_id": 4,
-//    "name": "abandon",
-//    "wordCount": 8
-//  }
-//],
-//  "words" : [
-//  {
-//    "test" : "test"
-//  }
-//]
-//}

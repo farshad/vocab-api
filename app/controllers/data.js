@@ -30,6 +30,24 @@ router.post('/import', function(req, res){
   Word.create(words, function () {
     res.end();
   });
+});
 
-  //res.end();
+// export data
+router.post('/export', function (req, res) {
+  var data = {};
+
+  // get categories by user id
+  Category.find({
+    user_id: req.user_id
+  }, '-user_id -_id', function(err, categories){
+    data.categories = categories;
+  });
+
+  // get words by user id
+  Word.find({
+    user_id: req.user_id
+  }, '-user_id -_id', function(err, words){
+    data.words = words;
+    res.json(data);
+  });
 });
